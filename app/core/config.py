@@ -3,9 +3,9 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     # Required settings (no defaults - must be in .env)
     
-    environment: str | None = 'Development'
+    environment: str | None = 'not set'
 
-    database_url: str = ""
+    database_url: str = "not set"
     secret_key: str = ""
     default_admin_password: str = "b00mb00!"
     default_admin_email: str = "root@rolltheday.com"

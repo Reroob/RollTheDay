@@ -7,8 +7,11 @@ from app.tasks.routes import router as tasks_router
 
 logger=logging.getLogger(__name__)
 
+logger.info(f"Starting in Environment: {settings.environment}")
+logger.info(f"env var check: {settings.envvar}")
+
 if settings.environment == "development":
-    logger.info(f"Creating tables in development environment: testvar {settings.envvar}")
+    logger.info(f"Creating tables in development environment")
     create_tables()
     create_default_admin_user()
 

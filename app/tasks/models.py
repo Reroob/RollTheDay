@@ -13,13 +13,14 @@ class TaskCategory(SQLModel,table=True):
             nullable=False,
         )
     )
-    taskname: str
+    title: str
     weight: int
     priority: bool
     dailylimit: int
     totallimit: int
     enabled: bool
-    colour: str  # Hex format: #RRGGBB (e.g., #FF5733)
+    colour: str
+    tasktype: int  # Hex format: #RRGGBB (e.g., #FF5733)
     
     # ORM relationship: deleting a category deletes its subtasks (delete-orphan)
     subtasks: List["SubTasks"] = Relationship(
@@ -38,13 +39,13 @@ class SubTasks(SQLModel, table=True):
             nullable=False,
         )
     )
-    taskname: str
+    title: str
     weight: int
     priority: bool
     dailylimit: int
     totallimit: int
     enabled: bool
-    
+    tasktype: int
     # ORM relationship back to parent category
     category: "TaskCategory" = Relationship(back_populates="subtasks")
        

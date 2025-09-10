@@ -8,12 +8,16 @@ from app.user_account import models as user_models  # noqa: F401
 
 logger= logging.getLogger(__name__)
 
+engine = None
 try:
     engine = create_engine(settings.database_url)
+    logger.info("Database engine created successfully")
 except Exception as e:
     logger.error(f'Unable to create engine: {e}')
 
 def get_session():
+    if engine is None:
+        raise RuntimeError("Database engine is not initialized")
     try:
         session = Session(engine)
         yield session
@@ -21,14 +25,21 @@ def get_session():
         session.close()
 
 def create_tables():
+    if engine is None:
+        logger.error("Database table creation failed: Engine is not initialized")
+        return
     try:
         SQLModel.metadata.create_all(engine)
+        logger.info("Database tables created successfully")
     except Exception as e:
         logger.error(f'Database table creation failed: {e}')
 
 
 def create_default_admin_user():
     """Check for default admin user (userid=1) and create if it doesn't exist"""
+    if engine is None:
+        logger.error("Failed to create default admin user: Engine is not initialized")
+        return
     try:
         with Session(engine) as session:
             # Check if user with id=1 exists
