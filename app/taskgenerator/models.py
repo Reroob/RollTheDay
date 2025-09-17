@@ -6,14 +6,15 @@ from uuid import UUID
 
 
 class SelectableTask(BaseModel):
-    public_uuid: UUID
-    task_type: int
-    tasktitle: str
-    parentcategoryname: str = None
-    dailylimit: int = 1000
-    totallimit: int = 1000
+    public_id: UUID
+    tasktype: int
+    title: str
+    parentcategoryname: str | None = None
+    dailylimit: int
+    totallimit: int
     ratioweight: float
     prioritypending: bool
+    category_colour: str = "#808080"
 
 class TaskChosen(BaseModel):
     tasktitle: str
@@ -27,6 +28,8 @@ class TaskGeneratorInput(BaseModel):
 
 class GeneratedRandomTaskList(BaseModel):
     randomtasklist: List[TaskChosen]
+
+
 
 
 

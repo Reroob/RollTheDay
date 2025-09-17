@@ -8,8 +8,8 @@ class TaskCategoryBase(BaseModel):
     title: str
     weight: int = 25
     priority: bool = False
-    dailylimit: int = 0
-    totallimit: int = 0
+    dailylimit: int = 1000
+    totallimit: int = 1000
     enabled: bool = True
     colour: str  = "#808080"
     tasktype: int = 1
@@ -58,6 +58,7 @@ class SubTasksBase(BaseModel):
     totallimit: int = 0
     enabled: bool = True
     tasktype: int = 2
+
    
 
 class SubTasksCreate(SubTasksBase):
@@ -96,6 +97,7 @@ class CategorySubtaskListRead(BaseModel):
     taskcategory: TaskCategoryRead
     subtasks: List[SubTasksRead]
     
+
 
 class UserTaskListFullRead(BaseModel):
     tasklist: List[CategorySubtaskListRead]
