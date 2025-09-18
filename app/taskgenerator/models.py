@@ -16,18 +16,12 @@ class SelectableTask(BaseModel):
     prioritypending: bool
     category_colour: str = "#808080"
 
-class TaskChosen(BaseModel):
-    tasktitle: str
-    category_name: str
 
-class TaskGeneratorInput(BaseModel):
-    selectabletasklist: List[SelectableTask]
-    slotcount: int
-    daycount: int
-    dailyslotcount: int
 
-class GeneratedRandomTaskList(BaseModel):
-    randomtasklist: List[TaskChosen]
+
+
+
+
 
 
 

@@ -4,6 +4,7 @@ from app.core.logs import logger
 from app.core.db import create_tables, create_default_admin_user
 from app.core.config import settings
 from app.tasks.routes import router as tasks_router
+from app.taskgenerator.routes import router as taskgenerator_router
 
 logger=logging.getLogger(__name__)
 
@@ -17,4 +18,5 @@ if settings.environment == "development":
 
 app = FastAPI()
 app.include_router(tasks_router)
+app.include_router(taskgenerator_router)
 
