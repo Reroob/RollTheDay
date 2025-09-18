@@ -7,6 +7,10 @@ update taskcategory set weight = 5 where id = 14 ;-- coding
 update taskcategory set weight = 15 where id = 16 ; -- leisure
 update taskcategory set weight = 15 where id = 19 ; -- art
 update taskcategory set weight = 10 where id = 17; -- housework
+update taskcategory set weight = 10 where id = 12 ; -- chess
+update taskcategory set weight = 15 where id = 13; -- blender
+update taskcategory set weight = 5 where id = 21; -- health
+
 select * from taskcategory
 
 
@@ -17,18 +21,19 @@ update taskcategory set weight = 10 where id = 14;  --#coding
 update taskcategory set weight = 0 where id = 16;  --#leisure
 update taskcategory set weight = 0 where id = 19; -- #art
 update taskcategory set weight = 0 where id = 17; -- housework
+update taskcategory set weight = 5 where id = 12 ; -- chess
+update taskcategory set weight = 5 where id = 13; -- blender
+update taskcategory set weight = 0 where id = 21; -- health
 select * from taskcategory
 
 --homeworking
-update taskcategory set weight = 25 where id = 20; -- #saas
-update taskcategory set weight = 25 where id = 15; -- #aws
+update taskcategory set weight = 30 where id = 20; -- #saas
+update taskcategory set weight = 30 where id = 15; -- #aws
 update taskcategory set weight = 5 where id = 14;  --#coding
 update taskcategory set weight = 5 where id = 16;  --#leisure
 update taskcategory set weight = 5 where id = 19; -- #art
 update taskcategory set weight = 5 where id = 17; -- housework
+update taskcategory set weight = 5 where id = 12 ; -- chess
+update taskcategory set weight = 10 where id = 13; -- blender
+update taskcategory set weight = 5 where id = 21; -- health
 select * from taskcategory
-
-
-
-
-
