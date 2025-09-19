@@ -39,8 +39,10 @@ def format_task_list(tasklist: List[TaskChosenRead]) -> List[RandomTaskTitleRead
 
 
 def task_list_selector(tasklist: list[SelectableTask], listcount: int = 1) -> TaskChosenListRead:
-    randomisedtasklist = random.choices(tasklist, weights=[task.ratioweight for task in tasklist], k=listcount+25)    
-    random.shuffle(randomisedtasklist)
+    randomisedtasklist = random.choices(tasklist, weights=[task.ratioweight for task in tasklist], k=listcount)    
+    randomisedtasklist2 = random.choices(tasklist, weights=[task.ratioweight for task in tasklist], k=listcount)    
+    combinedtasklist = randomisedtasklist + randomisedtasklist2
+    random.shuffle(combinedtasklist)
     logger.info(f"\n\n\nlistcount: {listcount}\n***************\n")
     randomisedtasklist = randomisedtasklist[:listcount]
     taskchosenlist = []
