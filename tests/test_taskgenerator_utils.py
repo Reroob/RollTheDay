@@ -450,6 +450,3 @@ def test_calculate_category_tasks():
 def test_calculate_user_task_list():
     assert calculate_user_task_list(SAMPLE_USER_TASK_LIST_FULL_READ) == EXPECTED_USER_TASK_LIST_FULL_READ
     assert calculate_user_task_list(SAMPLE_TASKLIST_FULL_READ_2) == EXPECTED_TASKLIST_FULL_READ_2
-"""
-
-"""

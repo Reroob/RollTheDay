@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roll The Day - Task Generator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #45a049;
+        }
+        
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .results {
+            margin-top: 30px;
+        }
+        
+        .results h2 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+        
+        .task-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .task-item {
+            background-color: #f9f9f9;
+            margin: 8px 0;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #4CAF50;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .task-item:nth-child(even) {
+            background-color: #f0f8f0;
+        }
+        
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #f44336;
+            margin-top: 20px;
+        }
+        
+        .no-tasks {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎲 Roll The Day - Task Generator</h1>
+        
+        <form id="taskForm">
+            <div class="form-group">
+                <label for="taskCount">Number of tasks to generate:</label>
+                <input type="number" id="taskCount" name="taskCount" min="1" max="50" value="5" required>
+            </div>
+            
+            <button type="submit" id="generateBtn">Generate Random Tasks</button>
+        </form>
+        
+        <div id="loading" class="loading" style="display: none;">
+            Generating your tasks...
+        </div>
+        
+        <div id="results" class="results" style="display: none;">
+            <h2>Your Random Tasks:</h2>
+            <ul id="taskList" class="task-list"></ul>
+        </div>
+        
+        <div id="error" class="error" style="display: none;"></div>
+    </div>
+
+    <script>
+        document.getElementById('taskForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const taskCount = document.getElementById('taskCount').value;
+            const generateBtn = document.getElementById('generateBtn');
+            const loading = document.getElementById('loading');
+            const results = document.getElementById('results');
+            const taskList = document.getElementById('taskList');
+            const error = document.getElementById('error');
+            
+            // Hide previous results and errors
+            results.style.display = 'none';
+            error.style.display = 'none';
+            
+            // Show loading state
+            generateBtn.disabled = true;
+            loading.style.display = 'block';
+            
+            try {
+                const response = await fetch(`/taskgenerator/random_task_list_by_userid_count?userid=1&taskcount=${parseInt(taskCount)}`, {
+                    method: 'POST',
+                    headers: {
+                        'accept': 'application/json',
+                    }
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response headers:', response.headers);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error response body:', errorText);
+                    throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+                }
+                
+                const tasks = await response.json();
+                console.log('Received tasks:', tasks);
+                
+                // Clear previous tasks
+                taskList.innerHTML = '';
+                
+                if (tasks.length === 0) {
+                    taskList.innerHTML = '<li class="no-tasks">No tasks were generated. Try again!</li>';
+                } else {
+                    tasks.forEach((task, index) => {
+                        const li = document.createElement('li');
+                        li.className = 'task-item';
+                        li.innerHTML = `<strong>${index + 1}.</strong> ${task.task}`;
+                        taskList.appendChild(li);
+                    });
+                }
+                
+                results.style.display = 'block';
+                
+            } catch (err) {
+                console.error('Error:', err);
+                console.error('Error details:', {
+                    message: err.message,
+                    stack: err.stack,
+                    response: err.response
+                });
+                error.textContent = `Error generating tasks: ${err.message}. Check browser console for more details.`;
+                error.style.display = 'block';
+            } finally {
+                // Hide loading state
+                generateBtn.disabled = false;
+                loading.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
