@@ -21,7 +21,12 @@ def get_session():
     try:
         session = Session(engine)
         yield session
+    except Exception as e:
+        logger.error(f'Error in get_session: {e}. rolling back and closing session')
+        session.rollback()
+        session.close()
     finally:
+        session.rollback()
         session.close()
 
 def create_tables():
