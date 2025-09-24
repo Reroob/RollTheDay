@@ -18,16 +18,20 @@ except Exception as e:
 def get_session():
     if engine is None:
         raise RuntimeError("Database engine is not initialized")
+    session = None
     try:
         session = Session(engine)
         yield session
     except Exception as e:
         logger.error(f'Error in get_session: {e}. rolling back and closing session')
-        session.rollback()
-        session.close()
+        if session:
+            session.rollback()
+            session.close()
+        raise
     finally:
-        session.rollback()
-        session.close()
+        if session:
+            session.rollback()
+            session.close()
 
 def create_tables():
     if engine is None:

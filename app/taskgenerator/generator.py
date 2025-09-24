@@ -8,6 +8,7 @@ from app.taskgenerator.utils import calculate_user_task_list
 import random
 from app.tasks.utils import get_user_full_tasks
 from app.taskgenerator.schemas import RandomTaskTitleRead
+from sqlmodel import Session
 
 logger = logging.getLogger(__name__)
 
@@ -15,13 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 
-def get_selectabletasklist_by_userid(userid: int) -> list[SelectableTask]:
-    tasklist = get_user_full_tasks(userid)
+def get_selectabletasklist_by_userid(userid: int, session: Session) -> list[SelectableTask]:
+    tasklist = get_user_full_tasks(userid, session)
     return tasklist
 
 
-def task_list_selector_by_userid(userid: int, listcount: int = 1) -> TaskChosenListRead:
-    user_task_list = get_user_full_tasks(userid)
+def task_list_selector_by_userid(userid: int, session: Session, listcount: int = 1) -> TaskChosenListRead:
+    user_task_list = get_user_full_tasks(userid, session)
     logger.info(f"\n\n\n\n\n\************\nUser task list: {user_task_list}")
     tasklist = calculate_user_task_list(user_task_list)
     logger.info(f"Task list: {tasklist}")

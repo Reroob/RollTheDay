@@ -13,37 +13,44 @@ update taskcategory set weight = 10 where id = 12 ; -- chess
 update taskcategory set weight = 15 where id = 13; -- blender
 update taskcategory set weight = 5 where id = 21; -- health
 update taskcategory set weight = 5 where id = 18; -- spanish
+update taskcategory set weight = 2 where id = 2; -- cooking
+update taskcategory set weight = 0 where id = 4; --work
 
 select * from taskcategory
 
 
 --daytime/cherry
 update taskcategory set weight = 15 where id = 20; -- #saas
-update taskcategory set weight = 40 where id = 15; -- #aws
+update taskcategory set weight = 30 where id = 15; -- #aws
 update taskcategory set weight = 10 where id = 14;  --#coding
 update taskcategory set weight = 0 where id = 16;  --#leisure
 update taskcategory set weight = 0 where id = 19; -- #art
 update taskcategory set weight = 0 where id = 17; -- housework
-update taskcategory set weight = 5 where id = 12 ; -- chess
+update taskcategory set weight = 3 where id = 12 ; -- chess
 update taskcategory set weight = 5 where id = 13; -- blender
 update taskcategory set weight = 2 where id = 21; -- health
-update taskcategory set weight = 2 where id = 18; -- spanish
+update taskcategory set weight = 0 where id = 18; -- spanish
+update taskcategory set weight = 0 where id = 2; -- cooking
+update taskcategory set weight = 5 where id = 4; --work
 select * from taskcategory
 
 --homeworking
 update taskcategory set weight = 30 where id = 20; -- #saas
-update taskcategory set weight = 30 where id = 15; -- #aws
+update taskcategory set weight = 35 where id = 15; -- #aws
 update taskcategory set weight = 10 where id = 14;  --#coding
-update taskcategory set weight = 5 where id = 16;  --#leisure
-update taskcategory set weight = 5 where id = 19; -- #art
+update taskcategory set weight = 4 where id = 16;  --#leisure
+update taskcategory set weight = 4 where id = 19; -- #art
 update taskcategory set weight = 5 where id = 17; -- housework
 update taskcategory set weight = 5 where id = 12 ; -- chess
 update taskcategory set weight = 5 where id = 13; -- blender
-update taskcategory set weight = 5 where id = 21; -- health
+update taskcategory set weight = 4 where id = 21; -- health
 update taskcategory set weight = 2 where id = 18; -- spanish
+update taskcategory set weight = 0 where id = 2; -- cooking
+update taskcategory set weight = 5 where id = 4; --work
 select * from taskcategory
 
 
+delete from taskcategory where id = 3
 
 
 

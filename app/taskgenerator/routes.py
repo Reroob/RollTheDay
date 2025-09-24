@@ -3,7 +3,7 @@ from typing import List
 from app.taskgenerator.models import SelectableTask
 from fastapi import APIRouter, Depends, HTTPException
 from app.taskgenerator.schemas import GeneratorInputRead, GeneratorOutputRead, TaskChosenListRead, TaskChosenRead, RandomTaskTitleRead
-from app.taskgenerator.generator import  task_selector, task_list_selector, task_list_selector_by_userid, format_task_list
+from app.taskgenerator.generator import  task_selector, task_list_selector, task_list_selector_by_userid, format_task_list, get_selectabletasklist_by_userid
 from app.core.db import get_session
 from sqlmodel import Session
 import random
@@ -26,8 +26,7 @@ async def random_task(tasklist: List[SelectableTask], session: Session = Depends
 @router.post('/random_task_list_Setcount', response_model=List[RandomTaskTitleRead])
 async def random_task_list_Setcount(userid: int = 1, session: Session = Depends(get_session), taskcount: int = 1):
     random_list = []
-    user_task_list = task_list_selector_by_userid(userid)
-    tasklist = task_list_selector_by_userid(userid)
+    tasklist = get_selectabletasklist_by_userid(userid, session)
     for i in range(taskcount):
         random_task = task_selector(tasklist)
         if not random_task.parentcategoryname:
@@ -38,7 +37,7 @@ async def random_task_list_Setcount(userid: int = 1, session: Session = Depends(
 
 @router.post('/random_task_list_by_userid_count', response_model=List[RandomTaskTitleRead])
 async def random_task_list_by_userid_count(userid: int = 1, session: Session = Depends(get_session), taskcount: int = 1):
-    random_list = task_list_selector_by_userid(userid, taskcount)
+    random_list = task_list_selector_by_userid(userid, session, taskcount)
     formatted_list = format_task_list(random_list)
     return formatted_list
 

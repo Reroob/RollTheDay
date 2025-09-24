@@ -24,18 +24,21 @@ def get_sqlalchemy_pool_stats():
 
 def get_postgres_connection_stats():
     """Query pg_stat_activity to see real DB-level connections."""
-    with Session(engine) as session:
-        result = session.exec(
-            text("""
-                SELECT datname, usename, state, count(*) 
-                FROM pg_stat_activity 
-                GROUP BY datname, usename, state
-                ORDER BY datname, usename, state;
-            """)
-        )
-        rows = result.all()
-        for row in rows:
-            print(row)
+    try:
+        with Session(engine) as session:
+            result = session.exec(
+                text("""
+                    SELECT datname, usename, state, count(*) 
+                    FROM pg_stat_activity 
+                    GROUP BY datname, usename, state
+                    ORDER BY datname, usename, state;
+                """)
+            )
+            rows = result.all()
+            for row in rows:
+                print(row)
+    except Exception as e:
+        print(f"Error querying postgres stats: {e}")
 
 
 if __name__ == "__main__":
