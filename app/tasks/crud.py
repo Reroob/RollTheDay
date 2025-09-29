@@ -155,11 +155,18 @@ def get_subtasks_by_category_publicid(session: Session, taskcategory_public_id: 
         return None    
 
 
+"""
+def get_user_by_userid(session: Session, userid: int) -> Optional[models.UserAccount]:
+    Get a user by userid
+    statement = select(models.UserAccount).where(models.UserAccount.id == userid)
+    return session.exec(statement).first()
+"""
 
 def get_categories_by_userid(session: Session, user_public_id: UUID) -> List[models.TaskCategory]:
     """Extract list of all categories for a specified user_id"""
     statement = select(models.TaskCategory).where(models.TaskCategory.useraccount_id == user_public_id)
     return session.exec(statement).all()
+
 
 
 
