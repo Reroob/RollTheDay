@@ -20,6 +20,7 @@ class TaskCategoryCreate(TaskCategoryBase):
 
 class TaskCategoryRead(TaskCategoryBase):
     public_id: UUID
+    weight: Optional[int] = None
     model_config = {"from_attributes": True} 
 
 class TaskCategoryUpdate(BaseModel):
@@ -119,3 +120,7 @@ class CategorySubtaskDelete(BaseModel):
     subtasks: List[SubtaskDelete]
 
 
+class CategoryPercentageRead(BaseModel):
+    category: str
+    percentage: float
+    colour: str

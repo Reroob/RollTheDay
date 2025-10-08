@@ -6,6 +6,7 @@ from app.tasks import logic
 from app.tasks import crud
 from app.tasks import schemas
 from uuid import UUID
+from app.tasks import utils
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +19,13 @@ def get_category_and_subtasks_by_category_publicid(session: Session, category_pu
         raise HTTPException(status_code=404, detail="Category not found")
     subtasks_extracted = crud.get_subtasks_by_category_publicid(session, category_public_id)
     return schemas.CategorySubtaskListRead(taskcategory=taskcategorydata, subtasks=subtasks_extracted)
+
+def generate_user_full_tasks(session: Session, userid: int) -> schemas.UserTaskListFullRead:
+    completetasklist = []
+    categorylist = crud.get_categories_by_userid(session, userid)
+    for category in categorylist:
+        completetasklist.append(get_category_and_subtasks_by_category_publicid(session, category.public_id))
+    return schemas.UserTaskListFullRead(tasklist=completetasklist)
 
 ## Get Endpoints #########################################################
 
@@ -204,7 +212,15 @@ async def delete_category_and_subtasks_by_uuid(categoryid: UUID, session: Sessio
         logger.error(f'Error: Unable to delete category {e}')
         raise HTTPException(status_code=500, detail='Error Could not delete category')
 
-
-
-
+@router.get('/get_category_percentages', response_model=list[schemas.CategoryPercentageRead])
+async def get_category_percentages(session: Session = Depends(get_session)):
+    try:
+        userid = 1
+        completetasklist = crud.get_categories_by_userid(session, userid)
+        return utils.calculate_category_ratios(completetasklist)
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f'Error: Unable to get category percentages {e}')
+        raise HTTPException(status_code=500, detail='Error Could not get category percentages')
 

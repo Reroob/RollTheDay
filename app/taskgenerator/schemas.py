@@ -41,3 +41,9 @@ class GeneratorOutputRead(BaseModel):
 
 class RandomTaskTitleRead(BaseModel):
     task: str
+
+
+class TaskPercentageRead(BaseModel):
+    taskpercentages: dict[str, int]
+
+
